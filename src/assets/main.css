@@ -1,0 +1,13 @@
+:root {
+    --primary-color-D: --var(#32213a);
+    --primary-color-L: --var(#383b53);
+    --secondary-color: --var(#66717e);
+    --neutral-color-L: --var(#d4d6b9);
+    --neutral-color-D: --var(#d1caa1);
+}
+
+* {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+}
