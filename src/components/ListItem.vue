@@ -14,7 +14,7 @@
         <h2>{{ props.title }}</h2>
         <p v-if="!props.description">{{ strings.no_desc }}</p>
         <p v-else>{{ props.description }}</p>
-        <slot />
+        <slot ></slot>
     </li>
 </template>
 
@@ -23,10 +23,11 @@
         background-color: var(--neutral-color-D);
         color: var(--primary-color-D);
 
-        padding: 1rem 0.75rem;
-        margin: 1rem 0.75rem;
         border: 0.2rem dashed var(--primary-color-L);
         list-style: none;
+
+        text-align: center;
+        align-content: center;
     }
 
     li > h2 {

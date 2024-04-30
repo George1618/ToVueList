@@ -33,13 +33,14 @@ function updateTaskDone(i: number) {
 </script>
 
 <template>
-    <h1>To Vue List</h1>
-    <label for="list">{{ strings.tasks }}</label>
+    <h1 id="header">To Vue List</h1>
+    <h2 id="tasks_header">{{ strings.tasks }}</h2>
     <ul id="list">
         <p v-if="tasks.length===0" >{{ strings.no_tasks }}</p>
         <ListItem v-else 
             v-for="(task, i) in tasks" 
                 :title="task.title" :description="task.description" :done="task.done" 
+            class="ListItem"
         >
             <div class="TaskActions">
                 <TextButton 
@@ -51,7 +52,7 @@ function updateTaskDone(i: number) {
             </div>
         </ListItem>
     </ul>
-    <label for="new_task">{{ strings.new_task }}</label>
+    <h2 id="new_task_header">{{ strings.new_task }}</h2>
     <form id="new_task" @submit.prevent>
         <label for="new_task_title">
             {{ strings.title }}
@@ -66,41 +67,92 @@ function updateTaskDone(i: number) {
 </template>
 
 <style scoped>
-    h1 {
+    #header {
         grid-row: 1 / 2;
-        grid-column: 1 / 13;
         background: var(--primary-color-D);
         color: var(--neutral-color-L);
 
+        height: 100%;
         text-align: center;
         align-self: center;
     }
 
-    label[for="list"] {
+    #tasks_header, #new_task_header {
+        background: var(--primary-color-L);
+        color: var(--neutral-color-L);
+        border: 2px double var(--secondary-color);
+
+        height: calc(100% - 4px);
+        text-align: center;
+        align-self: center;
+        align-content: center;
+    }
+
+    #tasks_header {
         grid-row: 2 / 3;
-        grid-column: 1 / 9;
-        background: var(--neutral-color-D);
-        color: var(--primary-color-L);
+
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
     }
 
     #list {
-        grid-row: 3 / 13;
-        grid-column: 1 / 9;
+        grid-row: 3 / 14;
         background: var(--neutral-color-L);
 
+        height: 100%;
+        width: 100%;
+        max-width: 100%;
+        overflow: auto;
+
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        align-self: center;
+        align-items: center;
+        justify-content: space-around;
+        gap: 10px;
     }
 
-    label[for="new_task"] {
-        grid-row: 2 / 3;
-        grid-column: 9 / 13;
-        background: var(--secondary-color);
+    #list > p {
+        font-size: 1.2rem;
+    }
+
+    .ListItem {
+        height: 25%;
+        width: calc(50% - 20px);
+        overflow: auto;
+    }
+
+    #new_task_header {
+        grid-row: 14 / 15;
+        
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
     }
 
     #new_task {
-        grid-row: 3 / 13;
-        grid-column: 9 / 13;
-        background: var(--neutral-color-D);
+        grid-row: 15 / 17;
+        background: var(--primary-color-D);
+        color: var(--neutral-color-L);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    #new_task label {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    #new_task input, #new_task textarea {
+        font-size: 1.1rem;
+        flex-grow: 4;
+    }
+
+    #new_task button {
+        font-size: 1.1rem;
+        color: var(--neutral-color-D);
     }
 </style>

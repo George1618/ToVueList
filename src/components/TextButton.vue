@@ -10,5 +10,8 @@
 </template>
 
 <style scoped>
-    
+    button {
+        border-radius: 10%;
+        background: var(--white-shade-L);
+    }
 </style>

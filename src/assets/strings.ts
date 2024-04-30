@@ -5,10 +5,10 @@ const strings = {
     add: "Adicionar tarefa",
     delete: "Apagar tarefa",
     mark_done: "Marcar como feita",
-    mark_undone: "Marcar como não feita",
+    mark_undone: "Desmarcar como feita",
     // lista de tarefas
-    tasks:  "Tarefas",
-    no_tasks: "Não há tarefas.",
+    tasks:  "Suas Tarefas",
+    no_tasks: "Não há tarefas. Você pode adicionar tarefas abaixo.",
     no_desc: "Sem descrição",
     // criação de tarefa (exceto botão)
     new_task: "Nova Tarefa",
