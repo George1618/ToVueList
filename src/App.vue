@@ -42,7 +42,7 @@ function updateTaskDone(i: number) {
                 :title="task.title" :description="task.description" :done="task.done" 
             class="ListItem"
         >
-            <div class="TaskActions">
+            <div class="ListItemActions">
                 <TextButton 
                     :text="task.done? strings.mark_undone : strings.mark_done" 
                     :click="() => updateTaskDone(i)" />
@@ -54,14 +54,10 @@ function updateTaskDone(i: number) {
     </ul>
     <h2 id="new_task_header">{{ strings.new_task }}</h2>
     <form id="new_task" @submit.prevent>
-        <label for="new_task_title">
-            {{ strings.title }}
-            <input id="new_task_title" type="text" maxlength="255" v-model="newTaskTitle"/>
-        </label>
-        <label for="new_task_desc">
-            {{ strings.desc }}
-            <textarea id="new_task_desc" maxlength="4096" v-model="newTaskDescription"></textarea>
-        </label>
+        <label for="new_task_title">{{ strings.title }}</label>
+        <input id="new_task_title" type="text" maxlength="255" v-model="newTaskTitle"/>
+        <label for="new_task_desc">{{ strings.desc }}</label>
+        <textarea id="new_task_desc" maxlength="4096" v-model="newTaskDescription"></textarea>
         <TextButton :text="strings.add" :click="addNewTask" />
     </form>
 </template>
@@ -121,7 +117,18 @@ function updateTaskDone(i: number) {
     .ListItem {
         height: 25%;
         width: calc(50% - 20px);
-        overflow: auto;
+        max-width: calc(50% - 20px);
+    }
+
+    .ListItemActions {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ListItemActions > * {
+        height: 30%;
+        margin-bottom: 10%;
+        font-size: 1.1rem;
     }
 
     #new_task_header {
@@ -136,9 +143,13 @@ function updateTaskDone(i: number) {
         background: var(--primary-color-D);
         color: var(--neutral-color-L);
 
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr 3fr 2fr;
+    }
+
+    #new_task > * {
+        align-self: center;
+        justify-self: center;
     }
 
     #new_task label {
@@ -148,11 +159,14 @@ function updateTaskDone(i: number) {
 
     #new_task input, #new_task textarea {
         font-size: 1.1rem;
-        flex-grow: 4;
+        height: 80%;
+        width: 90%;
     }
 
     #new_task button {
         font-size: 1.1rem;
         color: var(--neutral-color-D);
+        height: 50%;
+        width: 50%;
     }
 </style>

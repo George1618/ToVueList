@@ -11,7 +11,7 @@
 
 <style scoped>
     button {
-        border-radius: 10%;
+        border-radius: 5%;
         background: var(--white-shade-L);
     }
 </style>

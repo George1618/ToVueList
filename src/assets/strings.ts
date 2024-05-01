@@ -9,6 +9,7 @@ const strings = {
     // lista de tarefas
     tasks:  "Suas Tarefas",
     no_tasks: "Não há tarefas. Você pode adicionar tarefas abaixo.",
+    no_title: "Tarefa sem título",
     no_desc: "Sem descrição",
     // criação de tarefa (exceto botão)
     new_task: "Nova Tarefa",
