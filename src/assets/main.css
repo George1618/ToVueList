@@ -6,6 +6,10 @@
     --neutral-color-D: #d1caa1;
 
     --white-shade-L: #ffffff22;
+
+    --task-color-red: #ff2222;
+    --task-color-yellow: #ffff22;
+    --task-color-green: #22ff22;
 }
 
 * {
