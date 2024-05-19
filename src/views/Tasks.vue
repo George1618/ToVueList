@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import strings from '../assets/strings';
 
 import ListItem from '../components/ListItem.vue';
@@ -16,8 +16,11 @@ function updateTaskDone(i: number) {
     tasksStore.updateTask(i, null, null, null, doneTime );
 }
 
+const router = useRouter();
+
+// vai para a página própria da tarefa com índice i
 function navToTask(i: number) {
-    // navega para a página/view da tarefa com índice i em tasks
+    router.push(`${strings.task_route}/${i}`)
 }
 
 </script>
@@ -41,7 +44,7 @@ function navToTask(i: number) {
             </div>
         </ListItem>
     </ul>
-    <RouterLink to="/new">{{ strings.add_task }}</RouterLink>
+    <RouterLink :to="strings.new_task_route">{{ strings.add_task }}</RouterLink>
 </template>
 
 <style scoped>

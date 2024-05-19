@@ -10,7 +10,14 @@ export const useTasksStore = defineStore("Tasks", () => {
         done?: number // data de conclusão da tarefa, como uma timestamp numérica da data
     }[]>[]);
 
-    // criar uma nova tarefa (done pode ser undefined para indicar que ainda não foi concluída, ou seja, done: false)
+    // retorna uma tarefa, ou null se não houver tarefa com o índice i dado
+    function readTask(i: number) {
+        return (i>=0 && i<tasks.value.length) ? 
+            tasks.value[i]
+        : null
+    }
+
+    // cria uma nova tarefa (done pode ser undefined para indicar que ainda não foi concluída, ou seja, done: false)
     function createTask(title: string, description: string, deadline: number, done?: number) {
         tasks.value.push({
             title, 
@@ -20,7 +27,7 @@ export const useTasksStore = defineStore("Tasks", () => {
         }
     )}
 
-    // atualizar dados de uma tarefa (null é usado para não mudar uma tarefa e permitir que a string vazia "" possa ser uma mudança)
+    // atualiza dados de uma tarefa (null é usado para não mudar o dado da tarefa e permitir que a string vazia "" possa ser uma mudança)
     function updateTask(
         i: number, 
         newTitle: string | null, 
@@ -36,8 +43,8 @@ export const useTasksStore = defineStore("Tasks", () => {
         tasks.value.splice(i, 1, task)
     }
         
-    // remover uma tarefa da lista tasks
+    // remove uma tarefa da lista tasks
     function deleteTask(i: number) {tasks.value.splice(i, 1);}
 
-    return {tasks, createTask, updateTask, deleteTask}
+    return {tasks, createTask, readTask, updateTask, deleteTask}
 })

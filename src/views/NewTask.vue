@@ -4,7 +4,11 @@ import {ref} from 'vue';
 import strings from '@/assets/strings';
 import { useTasksStore } from '@/store/tasks';
 import TextButton from '@/components/TextButton.vue';
+import { useRouter } from 'vue-router';
+import DateTimeInput from '@/components/DateTimeInput.vue';
+import Datetime from '@/utils/datetime';
 
+const router = useRouter();
 const { createTask } = useTasksStore();
 
 const title = ref("");
@@ -13,9 +17,9 @@ const description = ref("");
 // data atual
 let now = new Date();
 // ano, mês e dia da data atual (formato usado para input[type="date"]: yyyy-mm-dd)
-let dateNow = now.toISOString().split("T")[0];
+let dateNow = Datetime.yyyymmdd(now);
 // horas e minutos da data atual (formato usado para input[type="time"]: hh:mm)
-let timeNow = now.toTimeString().split(" ")[0].slice(0, -3);
+let timeNow = Datetime.hhmm(now);
 
 const deadlineDate = ref(dateNow);
 const deadlineTime = ref(timeNow);
@@ -28,24 +32,18 @@ const doneTime = ref<string | undefined>(undefined);
 function addNewTask() {
     try {
         // primeiro valida os formatos dos valores dos inputs de Date e Time 
-        // (apenas para criação: os números podem estar fora do intervalo de dia, mês, hora ou minuto)
-        let datetimeFormat = new RegExp('\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}');
-        // Data e hora de done e deadline no formato acima
-        let deadlineDateTime = `${deadlineDate.value} ${deadlineTime.value}`;
-        let doneDateTime = alreadyDone.value ? `${doneDate.value} ${doneTime.value}` : undefined
-        if (datetimeFormat.test(deadlineDateTime)===false) {
-            throw `${strings.dateTimeFormatError} (${deadlineDateTime})`
+        let deadlineDateTime = Datetime.toDate(deadlineDate.value, deadlineTime.value);
+        if (deadlineDateTime===null) {
+            throw `${strings.dateTimeFormatError} (@${strings.deadline})`
         }
-        if (doneDateTime!==undefined && datetimeFormat.test(doneDateTime)===false ) {
-            throw `${strings.dateTimeFormatError} (${doneDateTime})`
+        let doneDateTime = Datetime.toDate(doneDate.value || '', doneTime.value || '');
+        if (alreadyDone.value && doneDateTime===null) {
+            throw `${strings.dateTimeFormatError} (@${strings.done})`
         }
-        /* Depois da validação */
-        // cria uma nova data com a timezone local usando o formato "yyyy-mm-dd hh:mm" da junção de Date com Time
-        let deadline = new Date(deadlineDateTime);
-        let done = doneDateTime ? new Date(doneDateTime) : undefined;
         // adiciona a nova tarefa com os valores calculados
-        createTask(title.value, description.value, deadline.getTime(), done?.getTime());
-        // navegar para a tela de tarefas
+        createTask(title.value, description.value, deadlineDateTime.getTime(), doneDateTime?.getTime());
+        // navega para a tela de tarefas
+        router.push(strings.tasks_route)
     }
     catch (error) {
         console.log(error);
@@ -63,16 +61,16 @@ function addNewTask() {
         <label for="nt_desc">{{ strings.description }}</label>
         <textarea id="nt_desc" maxlength="4096" v-model="description"></textarea>
 
-        <label for="nt_deadline_date">{{ strings.deadline }}</label>
-        <input id="nt_deadline_date" type="date" v-model="deadlineDate"/>
-        <input id="nt_deadline_time" type="time" step="60" v-model="deadlineTime"/>
+        <label id="nt_deadline_label">{{ strings.deadline }}</label>
+        <DateTimeInput label-id="nt_deadline_label" date-id="nt_deadline_date" time-id="nt_deadline_time"
+            :date="deadlineDate" :time="deadlineTime" />
 
         <label for="nt_already_done">{{ strings.already_done }}</label>
         <input id="nt_already_done" type="checkbox" v-model="alreadyDone" />
         
-        <label v-if="alreadyDone" for="nt_done_date">{{ strings.done }}</label>
-        <input v-if="alreadyDone" id="nt_done_date" type="date" v-model="doneDate"/>
-        <input v-if="alreadyDone" id="nt_done_time" type="time" step="60" v-model="doneTime"/>
+        <label v-if="alreadyDone" id="nt_done_label">{{ strings.done }}</label>
+        <DateTimeInput v-if="alreadyDone" label-id="nt_done_label" date-id="nt_done_date" time-id="nt_done_time"
+            :date="doneDate || ''" :time="doneTime || ''" />
 
         <TextButton :text="strings.add" :click="addNewTask" />
     </form>
@@ -94,12 +92,12 @@ function addNewTask() {
     }
     
     #nt_header {
-        grid-row: 14 / 15;
+        grid-row: 1 / 3;
         
     }
 
     #nt {
-        grid-row: 15 / 17;
+        grid-row: 3 / 17;
         background: var(--primary-color-D);
         color: var(--neutral-color-L);
 
