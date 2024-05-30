@@ -85,11 +85,11 @@ function updateTask() {
 </script>
 
 <template>
-    <div v-if="task===null">
+    <div id="no_task" v-if="task===null">
         <h1>{{ strings.no_task }}</h1>
         <TextButton :text="strings.go_back" :click="goBack" />
     </div>
-    <h1 id="task_header">{{  }}</h1>
+    <h1 id="task_header">{{ title }}</h1>
     <form id="task" @submit.prevent>
         <label for="title">{{ strings.title }}</label>
         <input id="title" type="text" maxlength="255" v-model="title"/>
@@ -113,5 +113,7 @@ function updateTask() {
 </template>
 
 <style scoped>
-
+    #no_task {
+        grid-row: 1 / 17;
+    }
 </style>

@@ -17,4 +17,8 @@ export default class Datetime {
         }
         return new Date(dt);
     }
+    // retorna a formatação padrão do local da data para visualização
+    static toDateString(date: Date) {
+        return date.toLocaleString().slice(0, -3);
+    }
 }

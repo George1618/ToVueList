@@ -11,9 +11,15 @@ const tasksStore = useTasksStore();
 const tasks = tasksStore.tasks;
 
 // atualiza apenas o atributo "done" ("feito") de uma tarefa
-function updateTaskDone(i: number) {
-    let doneTime = new Date().getDate()
-    tasksStore.updateTask(i, null, null, null, doneTime );
+function updateTaskDone(i: number, newDone: number | undefined) {
+    tasksStore.updateTask(i, null, null, null, newDone );
+}
+
+// apaga uma tarefa
+function deleteTask(i: number) {
+    // de maneira old-school, faz uma pergunta de confirmação antes de apagar
+    let confirmedDelete = confirm(strings.confirm_delete);
+    if (confirmedDelete) tasksStore.deleteTask(i);
 }
 
 const router = useRouter();
@@ -27,93 +33,83 @@ function navToTask(i: number) {
 
 <template>
     <h2 id="tasks_header">{{ strings.tasks }}</h2>
-    <ul id="list">
-        <p v-if="tasks.length===0" >{{ strings.no_tasks }}</p>
-        <ListItem v-else 
+    <p v-if="tasks.length===0" >{{ strings.no_tasks }}</p>
+    <ul v-else id="list">
+        <ListItem 
             v-for="(task, i) in tasks" 
-                :title="task.title" :description="task.description" :done="task.done!==undefined" 
+                :title="task.title" :description="task.description" 
+                :deadline="task.deadline" :done="task.done" 
+                :onDone="(newDone: number | undefined) => updateTaskDone(i, newDone)"
             class="ListItem"
         >
             <div class="ListItemActions">
                 <TextButton 
-                    :text="task.done? strings.mark_undone : strings.mark_done" 
-                    :click="() => updateTaskDone(i)" />
+                    :text="strings.delete"
+                    :click="() => deleteTask(i)" />
                 <TextButton
                     :text="strings.view_task"
                     :click="() => navToTask(i)" />
             </div>
         </ListItem>
     </ul>
-    <RouterLink :to="strings.new_task_route">{{ strings.add_task }}</RouterLink>
 </template>
 
 <style scoped>
-    #header {
-        grid-row: 1 / 2;
-        background: var(--primary-color-D);
-        color: var(--neutral-color-L);
-
-        height: 100%;
-        text-align: center;
-        align-self: center;
-    }
 
     #tasks_header {
         background: var(--primary-color-L);
-        color: var(--neutral-color-L);
+        color: var(--neutral-color-D);
         border: 2px double var(--secondary-color);
 
-        height: calc(100% - 4px);
+        height: calc(2rem - 4px);
         text-align: center;
         align-self: center;
         align-content: center;
-    }
-
-    #tasks_header {
-        grid-row: 2 / 3;
 
         border-bottom-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
     }
 
+    p {
+        font-size: 1.2rem;
+        height: calc(100% - 2rem);
+        text-align: center;
+        align-content: center;
+    }
+
     #list {
-        grid-row: 3 / 14;
         background: var(--neutral-color-L);
 
-        height: 100%;
+        height: calc(100% - 2rem);
         width: 100%;
         max-width: 100%;
         overflow: auto;
 
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
 
         align-self: center;
         align-items: center;
-        justify-content: space-around;
-        gap: 10px;
-    }
-
-    #list > p {
-        font-size: 1.2rem;
     }
 
     .ListItem {
-        height: 25%;
-        width: calc(50% - 20px);
-        max-width: calc(50% - 20px);
+        height: 15%;
+        width: calc(100% - 20px);
+        margin-top: 5px;
     }
 
     .ListItemActions {
+        height: 100%;
         display: flex;
         flex-direction: column;
+        align-content: space-between;
     }
 
     .ListItemActions > * {
-        height: 30%;
-        margin-bottom: 10%;
+        height: 50%;
+        width: 100%;
         font-size: 1.1rem;
+        text-overflow: ellipsis;
     }
 
 </style>

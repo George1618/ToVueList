@@ -65,8 +65,8 @@ function addNewTask() {
         <DateTimeInput label-id="nt_deadline_label" date-id="nt_deadline_date" time-id="nt_deadline_time"
             :date="deadlineDate" :time="deadlineTime" />
 
-        <label for="nt_already_done">{{ strings.already_done }}</label>
         <input id="nt_already_done" type="checkbox" v-model="alreadyDone" />
+        <label for="nt_already_done">{{ strings.already_done }}</label>
         
         <label v-if="alreadyDone" id="nt_done_label">{{ strings.done }}</label>
         <DateTimeInput v-if="alreadyDone" label-id="nt_done_label" date-id="nt_done_date" time-id="nt_done_time"
@@ -85,46 +85,44 @@ function addNewTask() {
         border-top-left-radius: 1rem;
         border-top-right-radius: 1rem;
 
-        height: calc(100% - 4px);
+        height: calc(2rem - 4px);
         text-align: center;
         align-self: center;
         align-content: center;
     }
-    
-    #nt_header {
-        grid-row: 1 / 3;
-        
-    }
 
     #nt {
-        grid-row: 3 / 17;
+        height: calc(100% - 2rem);
         background: var(--primary-color-D);
         color: var(--neutral-color-L);
-
-        display: grid;
-        grid-template-columns: 1fr 3fr 1fr 3fr 2fr;
     }
 
     #nt > * {
-        align-self: center;
+        height: 3rem;
         justify-self: center;
     }
 
     #nt label {
+        display: inline-block;
         font-size: 1.1rem;
+        width: 30%;
         text-align: center;
     }
 
     #nt input, #nt textarea {
         font-size: 1.1rem;
-        height: 80%;
-        width: 90%;
+        width: 100%;
+        background: var(--neutral-color-L);
+    }
+
+    #nt textarea {
+        height: 9rem;
     }
 
     #nt button {
         font-size: 1.1rem;
         color: var(--neutral-color-D);
-        height: 50%;
-        width: 50%;
+        width: 80%;
+        align-self: center;
     }
 </style>
