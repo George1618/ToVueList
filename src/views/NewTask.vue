@@ -63,14 +63,16 @@ function addNewTask() {
 
         <label id="nt_deadline_label">{{ strings.deadline }}</label>
         <DateTimeInput label-id="nt_deadline_label" date-id="nt_deadline_date" time-id="nt_deadline_time"
-            :date="deadlineDate" :time="deadlineTime" />
+            :date="deadlineDate" @updateDate="(date) => {deadlineDate=date}" 
+            :time="deadlineTime" @updateTime="(time) => {deadlineTime=time}" />
 
         <input id="nt_already_done" type="checkbox" v-model="alreadyDone" />
         <label for="nt_already_done">{{ strings.already_done }}</label>
         
         <label v-if="alreadyDone" id="nt_done_label">{{ strings.done }}</label>
         <DateTimeInput v-if="alreadyDone" label-id="nt_done_label" date-id="nt_done_date" time-id="nt_done_time"
-            :date="doneDate || ''" :time="doneTime || ''" />
+            :date="doneDate || ''" @updateDate="(date) => {doneDate=date}"
+            :time="doneTime || ''" @updateTime="(time) => {doneTime=time}" />
 
         <TextButton :text="strings.add" :click="addNewTask" />
     </form>
@@ -86,43 +88,73 @@ function addNewTask() {
         border-top-right-radius: 1rem;
 
         height: calc(2rem - 4px);
+        width: calc(100% - 4px);
         text-align: center;
-        align-self: center;
         align-content: center;
     }
 
     #nt {
         height: calc(100% - 2rem);
+        width: 100%;
         background: var(--primary-color-D);
         color: var(--neutral-color-L);
+
+        overflow: hidden;
+        display: grid;
+        grid-template-areas:    "ltit itit itit itit itit itit"
+                                "ldsc idsc idsc idsc idsc idsc"
+                                "lddl iddd iddt .    .    .   "
+                                "iald lald .    ldnl idnd idnt"
+                                ".    .    .    .    .    .   "
+                                ".    bt   bt   bt   bt   .   ";
     }
+    /**  l___ ou ___l: label; i___: input; 
+        tit: title; dsc: desc; dd_: deadline; ald: already_done; dn_: done; 
+        ___d: date; ___t: time. */
+    label[for="nt_title"]           {grid-area: ltit;}
+    #nt_title                       {grid-area: itit;}
+    label[for="nt_desc"]            {grid-area: ldsc;}
+    #nt_desc                        {grid-area: idsc;}
+    #nt_deadline_label              {grid-area: lddl;}
+    #nt :deep(#nt_deadline_date)    {grid-area: iddd;}
+    #nt :deep(#nt_deadline_time)    {grid-area: iddt;}
+    label[for="nt_already_done"]    {grid-area: lald;}
+    #nt_already_done                {grid-area: iald;}
+    #nt_done_label                  {grid-area: ldnl;}
+    #nt :deep(#nt_done_date)        {grid-area: idnd;}
+    #nt :deep(#nt_done_time)        {grid-area: idnt;}
+    #nt > button                    {grid-area: bt;}
 
     #nt > * {
         height: 3rem;
-        justify-self: center;
+        max-width: 100%;
     }
 
     #nt label {
-        display: inline-block;
+        display: block;
         font-size: 1.1rem;
-        width: 30%;
         text-align: center;
+        align-content: center;
+        border-bottom: 1px solid var(--neutral-color-D);
+    }
+
+    #nt label[for="nt_already_done"] {
+        text-align: start;
     }
 
     #nt input, #nt textarea {
         font-size: 1.1rem;
-        width: 100%;
+        width: 95%;
         background: var(--neutral-color-L);
     }
 
-    #nt textarea {
+    #nt_desc, #nt label[for="nt_desc"] {
         height: 9rem;
     }
 
     #nt button {
         font-size: 1.1rem;
         color: var(--neutral-color-D);
-        width: 80%;
-        align-self: center;
+        border-radius: 2%;
     }
 </style>

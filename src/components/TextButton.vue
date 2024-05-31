@@ -13,5 +13,6 @@
     button {
         border-radius: 5%;
         background: var(--white-shade-L);
+        cursor: pointer;
     }
 </style>

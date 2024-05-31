@@ -5,6 +5,7 @@ const strings = {
     plus: "+",
     spacing_colon: ": ",
     spacing_semicolon: "; ",
+    question_mark: "?",
     // rotas
     tasks_route: "/",
     new_task_route: "/n",

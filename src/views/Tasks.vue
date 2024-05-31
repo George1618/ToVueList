@@ -63,7 +63,6 @@ function navToTask(i: number) {
 
         height: calc(2rem - 4px);
         text-align: center;
-        align-self: center;
         align-content: center;
 
         border-bottom-left-radius: 1rem;
